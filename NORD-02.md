@@ -32,6 +32,7 @@ value notes split and merge as ever.
   "tag": "withdrawRequest",
   "...": "...",
   "mintPubkey": "<33-byte compressed secp256k1, hex>",
+  "nostrPubkey": "<x-only nostr pubkey the chain events verify against>",
   "asset": ["<genesis event id, hex>", "<relay hint>"],
   "artwork": ["<blob url>", "<sha256 of the blob, hex>"],
   "owner": "<npub of registered owner, hex, optional>"

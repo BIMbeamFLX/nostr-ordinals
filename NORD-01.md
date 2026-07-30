@@ -17,12 +17,23 @@ destruction verifiable by anyone with a relay connection.
 
 ## Identity: the mint on nostr
 
-A mint that issues assets MUST have a nostr identity. Its nostr pubkey
-MUST be the x-coordinate of its LNURLcash `mintPubkey` (the 33-byte
-compressed secp256k1 key with the parity byte dropped). One keypair, two
-protocols: a wallet that learned `mintPubkey` from a `withdrawRequest`
-can verify the mint's nostr events with no further trust setup, and vice
-versa.
+A mint that issues assets MUST have a nostr identity, advertised as
+`nostrPubkey` (x-only hex) in its `withdrawRequest` (NORD-02).
+
+The clean case: a mint that holds its own LNURLcash signing key SHOULD
+use that same keypair - `nostrPubkey == x(mintPubkey)` - one key, two
+protocols, zero trust setup.
+
+The delegated case (the reference implementation's reality): a mint
+whose note signatures go through its funding node's `signmessage` RPC
+never holds that key, and no such RPC can produce the raw BIP-340
+signature a nostr event needs. Such a mint uses a **dedicated** nostr
+key. The two identities are then linked where wallets already look:
+the same `withdrawRequest` advertises both `mintPubkey` and
+`nostrPubkey`, and every genesis carries the mint's `lnurl` tag - so a
+wallet that trusts the mint's endpoint learns both keys from it in one
+authenticated round trip, and chain events verify against `nostrPubkey`
+wherever this document says "the mint's" key.
 
 ## Genesis - kind `7600`
 

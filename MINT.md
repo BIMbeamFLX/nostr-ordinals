@@ -65,9 +65,11 @@ For a note whose secret has an asset:
 
 ## 3. Nostr publishing
 
-- One keypair. The mint's nostr pubkey MUST be `x(mintPubkey)` - the
-  same secp256k1 key that signs notes signs events (BIP-340 for events,
-  recoverable ECDSA for note signatures; same 32 bytes of key material).
+- Identity per NORD-01: `nostrPubkey == x(mintPubkey)` when the mint
+  holds its own signing key; a mint that delegates note signatures to
+  its node's `signmessage` RPC (lnurl-mint does) uses a dedicated nostr
+  key instead and advertises it as `nostrPubkey` on the withdrawRequest
+  - implemented in [dni/lnurl-mint#1](https://github.com/dni/lnurl-mint/pull/1).
 - On **mint settlement** of an asset: publish kind `7600` (genesis) with
   `x`, `url`, `birth` = the invoice's payment hash, `amount`, `lnurl`,
   `t` tags and the collection's content JSON (NORD-01).
