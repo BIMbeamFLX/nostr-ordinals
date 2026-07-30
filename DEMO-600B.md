@@ -14,7 +14,7 @@ The viewer renders every note as the object it is - no QR codes on
 screen, no hex strings above the fold:
 
 - **Banknote** - a plain value note. Denomination large in Impact
-  (21 000 sats), mint name, series, the 600 glyph, guilloche in the fire
+  (210 sats), mint name, series, the 600 glyph, guilloche in the fire
   palette. Selecting it offers: send (contact list -> nostr handover),
   melt, split, combine.
 - **Card** - an asset note. Full-bleed artwork from Blossom (`x`-verified),
@@ -45,21 +45,27 @@ payment that mints it.
 
 ## Flows to demo
 
-1. **Booster** - pay one LUD-06 invoice, receive N assets: the mint
-   pre-commits N cards, publishes N geneses on settlement, the buyer's
-   viewer fans out the fresh cards. Pure LUD-XX minting, N times.
-2. **Trade** - bearer handover of two cards in opposite directions via
+1. **Booster** - 210 sats, one LUD-06 invoice: three random cards at
+   60 sats charge each, 30 sats change as a banknote. The mint
+   pre-commits the cards, publishes their geneses on settlement, the
+   buyer's viewer fans them out. Pure LUD-XX minting, three times.
+2. **Fastplay starters** - two fixed 40-card decks, SIGNAL (Signal
+   affinity) and STONE (Power affinity), derived - not curated - from
+   the rulebook's recommended-first-deck shape over the real E1 pool in
+   collector-number order. 600 sats each, 40 x 15 priced to the sat, no
+   change. Buy both, hand one over, duel.
+3. **Trade** - bearer handover of two cards in opposite directions via
    nostr DM (gift-wrapped 7604s). No trust gained, none needed: both
    sides rotate on receive, both chains record the custody hop.
-3. **Duel stake** - each player sends a banknote into a 2-of-2-style
+4. **Duel stake** - each player sends a banknote into a 2-of-2-style
    arrangement the simple way: both stake to the mint-run table npub
    (registered transfers), winner gets both back. The mint is already
    trusted with every charge; the table is one more row in its book.
-4. **Collection page** - a nostr client (or the viewer's public mode)
+5. **Collection page** - a nostr client (or the viewer's public mode)
    renders any npub's registered cards straight from the chains: relay
    filter on kinds 7601/7602 with `p` = npub, artwork from Blossom.
    A public trophy shelf, zero backend.
-5. **Death** - melt a card on stage. The chain closes with a 7603, the
+6. **Death** - melt a card on stage. The chain closes with a 7603, the
    viewer greys the artwork, the sats land in a plain banknote. Scarcity
    you can watch.
 
