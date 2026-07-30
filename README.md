@@ -31,7 +31,7 @@ Kind numbers and field names are **draft** - placeholders until review.
 
 | Piece | Role | Status |
 | ------------ | ---------------------------------------------- | ------------------------------------------------ |
-| Wallet | card viewer, holds notes, renders cards/banknotes | fork of [dni/lnurl-wallet](https://github.com/dni/lnurl-wallet) ([PR #1](https://github.com/dni/lnurl-wallet/pull/1): images + 600B skin) |
+| Wallet | card viewer, holds notes, renders cards/banknotes | fork of [dni/lnurl-wallet](https://github.com/dni/lnurl-wallet) ([PR #2](https://github.com/dni/lnurl-wallet/pull/2): 600B skin, note images, `.fips` hosts) |
 | Mint | LNURLcash SERVICE + asset table + genesis publisher | to build on [dni/lnurl-mint](https://github.com/dni/lnurl-mint) |
 | Blossom | artwork by sha256, any server, easy file hosting | any BUD-01/02 server |
 | Relay | carries the asset chains | any relay; own relay for curation |
