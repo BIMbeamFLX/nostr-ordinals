@@ -8,7 +8,10 @@ keypairs, reachable as `<npub>.fips` over an IPv6 TUN interface -
 existing HTTP software runs over it unchanged, over UDP, TCP, Ethernet,
 Tor, Nym or Bluetooth. NORD already binds every actor to a secp256k1
 identity; FIPS makes that identity the network address. This document
-makes FIPS the **default transport** and keeps DNS+HTTPS as the mirror.
+specifies FIPS as an **optional transport**: clearnet (plain IP + DNS)
+stays the default for now, but implementations carry `.fips` support in
+the code from day one - flipping the default later is configuration,
+not development.
 
 ## Identity is the address
 
@@ -83,5 +86,6 @@ plain LUD-03 withdraw links.
 - Mirror lists are served by the mint and are as trustworthy as the
   mint; a wallet MUST NOT accept mirrors for one mint from another
   origin.
-- FIPS is v0.5.x - mints SHOULD treat it as the preferred, not yet the
-  only, door. Default-on, single-point-of-failure-off.
+- FIPS is v0.5.x - mints SHOULD treat it as an additional door, not yet
+  the main one. Support-on by default, reliance-off until the mesh
+  earns it.

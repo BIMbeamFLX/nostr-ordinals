@@ -35,7 +35,7 @@ Kind numbers and field names are **draft** - placeholders until review.
 | Mint | LNURLcash SERVICE + asset table + genesis publisher | to build on [dni/lnurl-mint](https://github.com/dni/lnurl-mint) |
 | Blossom | artwork by sha256, any server, easy file hosting | any BUD-01/02 server |
 | Relay | carries the asset chains | any relay; own relay for curation |
-| [FIPS](https://fips.network) | default transport: identity-addressed mesh (`<npub>.fips`), works over LAN/BLE/internet | v0.5.x, clearnet mirrors as fallback |
+| [FIPS](https://fips.network) | optional transport: identity-addressed mesh (`<npub>.fips`), works over LAN/BLE/internet | supported in code, clearnet default for now |
 
 Everything here is deliberately **mint-agnostic**: any LNURLcash mint can
 implement NORD-02 and issue assets; any wallet can render them from the
