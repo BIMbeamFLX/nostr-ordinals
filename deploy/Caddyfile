@@ -1,0 +1,25 @@
+# TLS + reverse proxy for the NORD prototype. Caddy provisions
+# certificates automatically and sets X-Forwarded-Proto/Host on
+# reverse_proxy by default - exactly what the mint's url_for-derived
+# callback/verify URLs need to come out https on the right host.
+#
+# The mint's own access-log stance (bearer k1s live in query strings)
+# applies here too: no access logs on the mint vhost.
+
+mint.{$DOMAIN} {
+	reverse_proxy mint:8111
+}
+
+relay.{$DOMAIN} {
+	reverse_proxy strfry:7777
+}
+
+# Blossom the boring way: content-addressed files served statically.
+# Upload = scp a file named <sha256> into ./blossom/ - the hash is the
+# name is the truth, any client verifies the bytes it gets.
+blossom.{$DOMAIN} {
+	root * /srv/blossom
+	header Cache-Control "public, max-age=31536000, immutable"
+	header Access-Control-Allow-Origin "*"
+	file_server
+}

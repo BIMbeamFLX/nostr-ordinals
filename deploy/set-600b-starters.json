@@ -1,0 +1,754 @@
+{
+ "assets": [
+  {
+   "content": {
+    "id": "E1-287",
+    "name": "Signal Commons — Sunrise",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Basic Resource",
+    "cost": "",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Commit: generate 1 Signal."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 16
+  },
+  {
+   "content": {
+    "id": "E1-003",
+    "name": "FLX, Culture Curator",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "3SS",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "Broadcast\nFLX stays unlocked after attacking."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-010",
+    "name": "Cuddy, Signal Organizer",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Mesh."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-034",
+    "name": "Sat, Relay Rider",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "1S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Broadcast; Mesh."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-035",
+    "name": "MHB, Keys Auditor",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "2SS",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "SS, Commit: decommission target Keys Network card."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-036",
+    "name": "Morgs, Friendly Fork",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "2S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-037",
+    "name": "AJ, Uptime Anchor",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "3SSS",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "0: The next 1 damage that would be dealt to this Avatar this turn is dealt to its owner instead. Only this Avatar's owner may activate this ability.\nWhen this Avatar is decommissioned, its owner loses half their Uptime, rounded up."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-043",
+    "name": "AJ, First Responder",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "1S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Commit: Prevent the next 1 damage that would be dealt to any target this turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-044",
+    "name": "Cuddy, Fast Starter",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-046",
+    "name": "MHB, Community Shield",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "3SS",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "As long as this Avatar is unlocked, all damage that would be dealt to you by unblocked Avatars is dealt to this Avatar instead."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-047",
+    "name": "Sat, Blade Firewall",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "3S",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "Firewall (This Avatar can't attack.)\nBroadcast"
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-048",
+    "name": "Morgs, Signal Knight",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Avatar",
+    "cost": "SS",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "First Strike (This Avatar deals clash damage before Avatars without First Strike.)\nShielded from Keys (It can't be targeted, attached, blocked or dealt damage by Keys sources.)"
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-008",
+    "name": "Grid Reset",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Operation",
+    "cost": "3S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Decommission all Resources."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-009",
+    "name": "Fair State",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Operation",
+    "cost": "1S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Each player chooses a number of Resources they control equal to the number of Resources controlled by the player who controls the fewest, then archives the rest. Players discard cards and archive Avatars the same way."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-012",
+    "name": "Last Broadcast",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Play this card on the Queue only during clash before blockers are declared.\nTarget Avatar defending player controls can block any number of Avatars this turn. It blocks each attacking Avatar this turn if able."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-023",
+    "name": "Emergency Reboot",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Reboot target Avatar."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-024",
+    "name": "Protocol Cleanup",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "1S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Decommission target Hardware or Protocol."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-027",
+    "name": "Guardian Signal",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "XS",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Prevent the next X damage that would be dealt to any target this turn. Until end of turn, you may pay 1 any time you could play an Zap. If you do, prevent the next 1 damage that would be dealt to that Network card or player this turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-028",
+    "name": "Repair Packet",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "S",
+    "rarity": "common",
+    "affinity": "Signal",
+    "text": "Choose one —\n• Target player gains 3 Uptime.\n• Prevent the next 3 damage that would be dealt to any target this turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-038",
+    "name": "Signal Rewrite",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Zap",
+    "cost": "S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Target card on the Queue or Network card becomes Signal. (Resource symbols on that Network card remain unchanged.)"
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-040",
+    "name": "Archive Restore",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Operation",
+    "cost": "2SS",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "Return target Avatar card from your Archive to the Network."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-007",
+    "name": "Firmware for Firewalls",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Protocol",
+    "cost": "S",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Attach to Firewall\nAttached Firewall can attack as though it didn't have Firewall."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-011",
+    "name": "Keys Shield",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Protocol",
+    "cost": "S",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "Attach to Avatar\nAttached Avatar has Shielded from Keys. This effect doesn't remove this Attachment."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-013",
+    "name": "Shared Uptime",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Protocol",
+    "cost": "SS",
+    "rarity": "rare",
+    "affinity": "Signal",
+    "text": "Attach to Avatar\nS: attached Avatar gets +1 Action and +1 Resilience until end of turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-014",
+    "name": "Timelock Shield",
+    "set": "FASTPLAY SIGNAL",
+    "type": "Protocol",
+    "cost": "S",
+    "rarity": "uncommon",
+    "affinity": "Signal",
+    "text": "Attach to Avatar\nAttached Avatar has Shielded from Timelock. This effect doesn't remove this Attachment."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-293",
+    "name": "Power Plant — Solar",
+    "set": "FASTPLAY STONE",
+    "type": "Basic Resource",
+    "cost": "",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Commit: generate 1 Power."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 16
+  },
+  {
+   "content": {
+    "id": "E1-144",
+    "name": "MadMunky, Young Overclocker",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2PP",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "Broadcast\nP: This Avatar gets +1 Action and +0 Resilience until end of turn. If this ability has been activated four or more times this turn, archive this Avatar at the beginning of the next end step."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-145",
+    "name": "Rootzoll, Hardware Breaker",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2P",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "Commit: decommission target Firewall."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-146",
+    "name": "Bam, Tunnel Builder",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Commit: Target Avatar with Action 2 or less can't be blocked this turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-147",
+    "name": "Leon, Grid Stabilizer",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "3PP",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-151",
+    "name": "Essex, Thermal Operator",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "3PP",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-156",
+    "name": "Toni China, Hot-Air Relay",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "P",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "P: This Avatar gains Broadcast until end of turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-157",
+    "name": "MadMunky, Chaos Coordinator",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "1PP",
+    "rarity": "rare",
+    "affinity": "Power",
+    "text": "Other Goblins get +1 Action and +1 Resilience and have Backchannel—Action."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-158",
+    "name": "Rootzoll, Stone Sentinel",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2P",
+    "rarity": "rare",
+    "affinity": "Power",
+    "text": "Broadcast\nP: This Avatar gets +0 Action and +1 Resilience until end of turn."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-159",
+    "name": "Leon, Shift Worker",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-160",
+    "name": "Bam, Heavy Lifter",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "3P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-161",
+    "name": "Essex, Bull Runner",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "1PP",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-162",
+    "name": "Toni China, Rough Miner",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "1P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "This Avatar can't block Avatars with Action 2 or greater."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-163",
+    "name": "Rootzoll, Crew Multiplier",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "2PP",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "Rootzoll, Crew Multiplier's Action and Resilience are each equal to the number of non-Firewall Avatars you control."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-166",
+    "name": "MadMunky, Meme Raider",
+    "set": "FASTPLAY STONE",
+    "type": "Avatar",
+    "cost": "P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "No special ability."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-004",
+    "name": "Zap",
+    "set": "FASTPLAY STONE",
+    "type": "Zap",
+    "cost": "P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Zap deals 3 damage to any target."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-142",
+    "name": "Power Rewrite",
+    "set": "FASTPLAY STONE",
+    "type": "Zap",
+    "cost": "P",
+    "rarity": "rare",
+    "affinity": "Power",
+    "text": "Target card on the Queue or Network card becomes Power. (Its Resource symbols remain unchanged.)"
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-143",
+    "name": "Final Settlement",
+    "set": "FASTPLAY STONE",
+    "type": "Operation",
+    "cost": "XP",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Final Settlement deals X damage to any target. If it's an Avatar, it can't be Rebooted this turn, and if it would be decommissioned this turn, Cold Storage it instead."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-149",
+    "name": "Hashquake",
+    "set": "FASTPLAY STONE",
+    "type": "Operation",
+    "cost": "XP",
+    "rarity": "rare",
+    "affinity": "Power",
+    "text": "Hashquake deals X damage to each Avatar without Broadcast and each player."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-150",
+    "name": "Route Misdirection",
+    "set": "FASTPLAY STONE",
+    "type": "Zap",
+    "cost": "P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Play only during blockers. Remove one defending Avatar from clash; anything it alone blocked becomes unblocked. It may block another attacker."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-152",
+    "name": "Power Burst",
+    "set": "FASTPLAY STONE",
+    "type": "Operation",
+    "cost": "XP",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "This card on the Queue costs 1 more to play for each target beyond the first.\nPower Burst deals X damage divided evenly, rounded down, among any number of targets."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-154",
+    "name": "Signal Outage",
+    "set": "FASTPLAY STONE",
+    "type": "Operation",
+    "cost": "3P",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "Decommission all Signal Resource."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-155",
+    "name": "Process Fork",
+    "set": "FASTPLAY STONE",
+    "type": "Zap",
+    "cost": "PP",
+    "rarity": "rare",
+    "affinity": "Power",
+    "text": "Copy target Zap or Operation card on the Queue, except that the copy is Power. You may choose new targets for the copy."
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-141",
+    "name": "Tunneling Patch",
+    "set": "FASTPLAY STONE",
+    "type": "Protocol",
+    "cost": "P",
+    "rarity": "uncommon",
+    "affinity": "Power",
+    "text": "Attach to Avatar\nAttached Avatar has Backchannel — Power. (That Avatar can't be blocked while the defending player controls a Power Resource.)"
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  },
+  {
+   "content": {
+    "id": "E1-148",
+    "name": "Grounded Signal",
+    "set": "FASTPLAY STONE",
+    "type": "Protocol",
+    "cost": "P",
+    "rarity": "common",
+    "affinity": "Power",
+    "text": "Attach to Avatar\nWhen this Attachment enters, if attached Avatar has Broadcast, this Attachment deals 2 damage to that Avatar and this Attachment gains \"attached Avatar loses Broadcast.\""
+   },
+   "amount_msat": 15000,
+   "collection": "600b",
+   "count": 1
+  }
+ ]
+}

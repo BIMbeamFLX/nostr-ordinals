@@ -1,0 +1,75 @@
+# The NORD prototype stack, self-contained on one box: the mint (our
+# fork branch with the asset layer, dni/lnurl-mint#1), an lnd running
+# neutrino (no bitcoind - header sync only, fine for a small mint), a
+# strfry relay for the asset chains, and caddy for TLS + reverse proxy
+# (sets X-Forwarded-* automatically, which the mint's url_for-derived
+# callback URLs depend on) + Blossom-style static artwork serving.
+#
+# Bring-up: see README.md in this directory. Real sats live here - keep
+# MAX_SENDABLE_MSAT tight and the node's liquidity small.
+
+services:
+  mint:
+    build:
+      context: https://github.com/BIMbeamFLX/lnurl-mint.git#feature/nord-assets
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      FUNDINGSOURCE_BACKEND: lnd
+      FUNDINGSOURCE_URL: https://lnd:8080
+      FUNDINGSOURCE_CERT_PATH: /lnd/tls.cert
+      DATABASE_PATH: /data/mint.db
+    # the macaroon is bytes on disk but the mint wants hex in an env var -
+    # hex it at start, after lnd has materialized it (first boot ordering)
+    entrypoint: >
+      sh -c 'until [ -f /lnd/data/chain/bitcoin/mainnet/admin.macaroon ]; do sleep 2; done;
+      export FUNDINGSOURCE_MACAROON=$$(python -c "print(open(\"/lnd/data/chain/bitcoin/mainnet/admin.macaroon\",\"rb\").read().hex())");
+      exec fastapi run lnurl_mint/server.py --host 0.0.0.0 --port 8111'
+    volumes:
+      - mint-data:/data
+      - lnd-data:/lnd:ro
+    depends_on:
+      - lnd
+
+  lnd:
+    image: lightninglabs/lnd:v0.19.2-beta
+    restart: unless-stopped
+    command:
+      - --bitcoin.mainnet
+      - --bitcoin.node=neutrino
+      - --neutrino.addpeer=btcd-mainnet.lightning.computer
+      - --fee.url=https://nodes.lightning.computer/fees/v1/btc-fee-estimates.json
+      - --restlisten=0.0.0.0:8080
+      - --tlsextradomain=lnd
+      - --wallet-unlock-password-file=/root/.lnd/unlock.txt
+      - --wallet-unlock-allow-create
+    volumes:
+      - lnd-data:/root/.lnd
+
+  strfry:
+    image: ghcr.io/hoytech/strfry:latest
+    restart: unless-stopped
+    volumes:
+      - ./strfry.conf:/etc/strfry.conf:ro
+      - strfry-data:/app/strfry-db
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./blossom:/srv/blossom:ro
+      - caddy-data:/data
+    depends_on:
+      - mint
+      - strfry
+
+volumes:
+  mint-data:
+  lnd-data:
+  strfry-data:
+  caddy-data:
