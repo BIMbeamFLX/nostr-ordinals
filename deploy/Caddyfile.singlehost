@@ -1,0 +1,23 @@
+# Single-host variant: everything under ONE existing DNS name, no
+# subdomain records needed - the prototype path for a box that already
+# resolves (e.g. sec1.citadel-resources.com). Mint at /, relay at
+# /relay, Blossom at /blossom/<sha256>. LNURL is path-agnostic, strfry
+# sees / after the prefix strip, and caddy still sets the forwarded
+# headers the mint's callback URLs depend on.
+
+{$DOMAIN} {
+	handle_path /relay* {
+		reverse_proxy strfry:7777
+	}
+
+	handle_path /blossom/* {
+		root * /srv/blossom
+		header Cache-Control "public, max-age=31536000, immutable"
+		header Access-Control-Allow-Origin "*"
+		file_server
+	}
+
+	handle {
+		reverse_proxy mint:8111
+	}
+}
