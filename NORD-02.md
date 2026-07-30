@@ -33,6 +33,7 @@ value notes split and merge as ever.
   "...": "...",
   "mintPubkey": "<33-byte compressed secp256k1, hex>",
   "asset": ["<genesis event id, hex>", "<relay hint>"],
+  "artwork": ["<blob url>", "<sha256 of the blob, hex>"],
   "owner": "<npub of registered owner, hex, optional>"
 }
 ```
@@ -40,6 +41,11 @@ value notes split and merge as ever.
 - `asset` is the pointer that makes any wallet a card viewer: resolve
   the genesis event, fetch the artwork by its `x` hash from Blossom,
   verify, render. Absent on plain notes.
+- `artwork` mirrors the genesis `url`/`x` tags verbatim, so a wallet
+  without a nostr client can render the card in one round trip: fetch,
+  verify sha256, display. A mint serving bytes here that don't match
+  the genesis commitment is equivocating, and clients that later
+  resolve the chain will surface it.
 - `owner` is present iff the asset is in **registered mode** (below).
 
 ## Minting an asset
