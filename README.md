@@ -22,6 +22,7 @@ may carry codes, screens don't have to).
 | ------------------------ | ----------------------------------------------------------------- |
 | [NORD-01](NORD-01.md) | Asset events: genesis, transfer, confirm, melt. Chain rules. Artwork on Blossom. |
 | [NORD-02](NORD-02.md) | LNURLcash binding: asset pointer in `withdrawRequest`, registered mode (P2PK-style owner), nostr handover. |
+| [NORD-03](NORD-03.md) | FIPS transport binding: `<npub>.fips` as the mint's canonical address, mirrors, local-first mesh operation. |
 | [DEMO-600B](DEMO-600B.md) | The 600B Timelock TCG as the reference deployment: cards, boosters, duels, banknotes. |
 
 Kind numbers and field names are **draft** - placeholders until review.
@@ -34,6 +35,7 @@ Kind numbers and field names are **draft** - placeholders until review.
 | Mint | LNURLcash SERVICE + asset table + genesis publisher | to build on [dni/lnurl-mint](https://github.com/dni/lnurl-mint) |
 | Blossom | artwork by sha256, any server, easy file hosting | any BUD-01/02 server |
 | Relay | carries the asset chains | any relay; own relay for curation |
+| [FIPS](https://fips.network) | default transport: identity-addressed mesh (`<npub>.fips`), works over LAN/BLE/internet | v0.5.x, clearnet mirrors as fallback |
 
 Everything here is deliberately **mint-agnostic**: any LNURLcash mint can
 implement NORD-02 and issue assets; any wallet can render them from the
