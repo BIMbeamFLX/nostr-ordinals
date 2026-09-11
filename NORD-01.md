@@ -50,6 +50,7 @@ replaceability - a wrong genesis is melted and reissued.
     ["url", "<Blossom URL hint>"],
     ["url", "<another Blossom URL hint>"],
     ["birth", "<payment_hash of the minting invoice, hex>"],
+    ["anchor", "<the LUD-12 comment on that invoice, verbatim>"],
     ["amount", "<msat charged at birth>"],
     ["lnurl", "<the mint's withdraw endpoint, LUD-17 form>"],
     ["t", "<collection tag, e.g. 600b>"]
@@ -63,10 +64,18 @@ replaceability - a wrong genesis is melted and reissued.
   sha256 of a fetched blob against `x` and MUST NOT render a mismatch.
   `url` entries are hints, not authorities - any Blossom server that has
   the blob is as good as any other.
-- `birth` anchors the asset to the Lightning payment that minted it: it
-  is the payment hash of the minting invoice, i.e. `sha256(k1_0)` of the
-  asset's first bearer secret (LUD-25: the preimage is the secret). The
-  paid invoice is a receipt anyone can check against this tag.
+- `birth` is the payment hash of the invoice that funded the asset: a
+  receipt. Anyone holding the paid invoice, or asking the mint's LUD-21
+  `verify`, can check the payment behind the asset against it. Under
+  LUD-25 the preimage only settles the payment and never becomes a note,
+  so `birth` says nothing about any bearer secret.
+- `anchor` binds the asset to its first note: the LUD-25 `comment` the
+  minting WALLET attached to that invoice, verbatim - the id the mint
+  credited. The WALLET chose it before paying, so it recognizes its own
+  genesis on relays before it ever rotates. Like `birth`, it is public
+  by construction (a hash or a public key) and reveals no secret. A mint
+  MUST NOT publish a genesis whose `anchor` it did not credit from the
+  invoice named in `birth`.
 - `amount` is the charge at birth. The current charge is whatever the
   mint reports for the asset's current secret; a melted asset's charge is
   zero. Genesis states history, not present.

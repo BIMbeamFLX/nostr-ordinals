@@ -40,15 +40,16 @@ screen, no hex strings above the fold:
 
 The card pipeline (`cards/e1-cards.json` -> Blossom upload -> genesis
 per printed card) is the mint's set-import step: one blob per artwork,
-one 7600 per physical card instance, `birth` bound to the booster
-payment that mints it.
+one 7600 per physical card instance, `birth` and `anchor` bound to the
+payment and comment that mint it.
 
 ## Flows to demo
 
-1. **Booster** - 210 sats, one LUD-06 invoice: three random cards at
-   60 sats charge each, 30 sats change as a banknote. The mint
-   pre-commits the cards, publishes their geneses on settlement, the
-   buyer's viewer fans them out. Pure LUD-25 minting, three times.
+1. **Booster** - 210 sats, paid as four comment-protected mints in one
+   go (LUD-25 credits one note per comment): three random cards at 60
+   sats charge each and a 30-sat banknote. The mint binds each card mint
+   to the next queued instance, publishes its genesis on settlement, the
+   buyer's viewer fans them out. Pure LUD-25 minting, four times.
 2. **Fastplay starters** - two fixed 40-card decks, SIGNAL (Signal
    affinity) and STONE (Power affinity), derived - not curated - from
    the rulebook's recommended-first-deck shape over the real E1 pool in

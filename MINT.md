@@ -86,7 +86,8 @@ For a note whose secret has an asset:
   key instead and advertises it as `nostrPubkey` on the withdrawRequest
   - prototyped in [lnurlcash/lnurl-mint#1](https://github.com/lnurlcash/lnurl-mint/pull/1) (closed unmerged).
 - On **mint settlement** of an asset: publish kind `7600` (genesis) with
-  `x`, `url`, `birth` = the invoice's payment hash, `amount`, `lnurl`,
+  `x`, `url`, `birth` = the invoice's payment hash, `anchor` = its
+  `comment` verbatim, `amount`, `lnurl`,
   `t` tags and the collection's content JSON (NORD-01).
 - On **rotate** of an asset secret: publish kind `7601` referencing
   genesis + current tip; include `["p", <npub>]` iff the caller passed

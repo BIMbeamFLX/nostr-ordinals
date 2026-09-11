@@ -60,16 +60,16 @@ sequenceDiagram
   participant B as Blossom
   participant R as Relay
   S->>B: upload artwork (once, at set import)
-  W->>S: LUD-06 payRequest, pays invoice
-  Note over W: preimage = k1_0
-  S->>R: publish genesis (kind 7600, birth = payment_hash)
+  W->>S: LUD-06 payRequest, comment = id of k1_0, pays invoice
+  Note over W: holds k1_0, the note the mint credits under that comment
+  S->>R: publish genesis (kind 7600, birth = payment_hash, anchor = comment)
   W->>S: GET withdrawLink?k1=k1_0 (verify), rotate
   Note over W: holds asset note, renders card from Blossom
 ```
 
-The genesis `birth` tag equals the paid invoice's payment hash, so the
-minting wallet can verify the genesis it sees on relays is *its* asset
-before it even rotates.
+The minting wallet finds its genesis by `anchor` - the comment it chose
+itself - and can confirm the asset is *its* before it even rotates.
+`birth` lets everyone else tie that genesis to a real, paid invoice.
 
 ## Moving custody without QR codes
 
