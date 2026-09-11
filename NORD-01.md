@@ -1,6 +1,6 @@
 # NORD-01: Asset events
 
-`author: FLX` `status: draft` `requires: LUD-XX LNURLcash`
+`author: FLX` `status: draft` `requires: LUD-25 LNURLcash @ d2f307f`
 
 An **asset** is a unique digital object - a trading card, a ticket, a
 numbered banknote - whose charge (sats) is held by an LNURLcash SERVICE
@@ -65,7 +65,7 @@ replaceability - a wrong genesis is melted and reissued.
   the blob is as good as any other.
 - `birth` anchors the asset to the Lightning payment that minted it: it
   is the payment hash of the minting invoice, i.e. `sha256(k1_0)` of the
-  asset's first bearer secret (LUD-XX: the preimage is the secret). The
+  asset's first bearer secret (LUD-25: the preimage is the secret). The
   paid invoice is a receipt anyone can check against this tag.
 - `amount` is the charge at birth. The current charge is whatever the
   mint reports for the asset's current secret; a melted asset's charge is

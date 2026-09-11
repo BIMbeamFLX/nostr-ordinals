@@ -20,7 +20,7 @@ screen, no hex strings above the fold:
 - **Card** - an asset note. Full-bleed artwork from Blossom (`x`-verified),
   name, affinity (P/B/K/S/T), set and card number from the genesis
   `content` JSON, charge shown as the card's "life". A `signed` stamp
-  when the LUD-XX signature verifies, an `owner` stamp when registered.
+  when the LUD-25 signature verifies, an `owner` stamp when registered.
   Send and melt only - cards refuse split/merge (NORD-02), and melting
   shows exactly what it is: **the card dies and pays out its charge**.
 
@@ -48,7 +48,7 @@ payment that mints it.
 1. **Booster** - 210 sats, one LUD-06 invoice: three random cards at
    60 sats charge each, 30 sats change as a banknote. The mint
    pre-commits the cards, publishes their geneses on settlement, the
-   buyer's viewer fans them out. Pure LUD-XX minting, three times.
+   buyer's viewer fans them out. Pure LUD-25 minting, three times.
 2. **Fastplay starters** - two fixed 40-card decks, SIGNAL (Signal
    affinity) and STONE (Power affinity), derived - not curated - from
    the rulebook's recommended-first-deck shape over the real E1 pool in

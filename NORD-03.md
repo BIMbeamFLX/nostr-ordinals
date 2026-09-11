@@ -35,7 +35,7 @@ and genesis `url` hints MAY be `.fips` URLs.
 ## URL rules
 
 - Wallets MUST resolve `.fips` hosts as `http://` (the same rule LUD-17
-  clients already apply to `.onion`). For dni/lnurl-wallet this is one
+  clients already apply to `.onion`). For lnurlcash/lnurl-wallet this is one
   line: `host.endsWith('.fips')` in `isInsecureHost`.
 - A note URL SHOULD use the mint's `.fips` address as its canonical
   host. The host is transport, never identity: `k1` is the asset,

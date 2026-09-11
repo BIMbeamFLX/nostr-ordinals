@@ -1,6 +1,6 @@
 # NORD-02: LNURLcash binding
 
-`author: FLX` `status: draft` `requires: LUD-XX LNURLcash, NORD-01`
+`author: FLX` `status: draft` `requires: LUD-25 LNURLcash @ d2f307f, NORD-01`
 
 NORD-01 defines what an asset *is*; this document defines how a mint
 carries one on plain LNURLcash, and how custody moves without a QR code
@@ -51,7 +51,7 @@ value notes split and merge as ever.
 
 ## Minting an asset
 
-The LUD-XX minting flow, unchanged, plus one publication:
+The LUD-25 minting flow, unchanged, plus one publication:
 
 ```mermaid
 sequenceDiagram
@@ -90,7 +90,7 @@ URL to the recipient as a NIP-59 gift-wrapped rumor, kind `7604`:
 }
 ```
 
-The recipient's wallet unwraps, stores, and immediately rotates (LUD-XX
+The recipient's wallet unwraps, stores, and immediately rotates (LUD-25
 receive hygiene - the sender still knows the wrapped secret). The mint
 records the bearer transfer (NORD-01 kind `7601`, mint-authored; `p`
 only if the recipient disclosed an npub at rotate time via `claimer`,

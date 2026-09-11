@@ -1,15 +1,15 @@
 # MINT.md: the complete server-side delta
 
-`status: draft` `audience: the SERVICE implementer` `requires: LUD-XX LNURLcash`
+`status: draft` `audience: the SERVICE implementer` `requires: LUD-25 LNURLcash @ d2f307f`
 
 Everything the mint has to do to make NORD real, in dependency order,
 nothing omitted, nothing optional left ambiguous. Wallet-side groundwork
-already exists ([dni/lnurl-wallet#2](https://github.com/dni/lnurl-wallet/pull/2));
+already exists (our [lnurl-wallet fork](https://github.com/BIMbeamFLX/lnurl-wallet/tree/feature/nostr-ordinals));
 the demo UI exists ([600.wtf/nord.html](https://github.com/600-000-000-000/600000000000/pull/32)).
 The mint is the missing piece. Estimated honest scope: items 0-3 are an
 afternoon each, 4-5 are optional.
 
-## 0. Baseline: catch lnurl-mint up to the current LUD-XX draft
+## 0. Baseline: catch lnurl-mint up to the current LUD-25 draft
 
 Per the wallet README's compatibility notes, lnurl-mint still serves an
 earlier draft. Required before anything NORD:
@@ -69,7 +69,7 @@ For a note whose secret has an asset:
   holds its own signing key; a mint that delegates note signatures to
   its node's `signmessage` RPC (lnurl-mint does) uses a dedicated nostr
   key instead and advertises it as `nostrPubkey` on the withdrawRequest
-  - implemented in [dni/lnurl-mint#1](https://github.com/dni/lnurl-mint/pull/1).
+  - prototyped in [lnurlcash/lnurl-mint#1](https://github.com/lnurlcash/lnurl-mint/pull/1) (closed unmerged).
 - On **mint settlement** of an asset: publish kind `7600` (genesis) with
   `x`, `url`, `birth` = the invoice's payment hash, `amount`, `lnurl`,
   `t` tags and the collection's content JSON (NORD-01).
@@ -132,7 +132,7 @@ point.
    dependence, pinning services as de-facto registries. Blossom is the
    subset of that idea that survives contact with production.
 4. **One identity, everywhere.** BUD uploads are signed with nostr
-   keys. The mint's `x(mintPubkey)` already signs its notes (LUD-XX)
+   keys. The mint's `x(mintPubkey)` already signs its notes (LUD-25)
    and its events (NORD-01); it now also owns its blobs. No second
    account system, no API keys, no bucket policies.
 5. **Deduplication by construction.** A set has thousands of card
@@ -160,4 +160,4 @@ point.
   (upload at set import); serving blobs is somebody's static box.
 - No new endpoints. Everything rides the LUD-03/06 shapes plus fields.
 - No account system, no admin UI, no queue infrastructure. SQLite, a
-  timer, and the four callback operations LUD-XX already defines.
+  timer, and the four callback operations LUD-25 already defines.
