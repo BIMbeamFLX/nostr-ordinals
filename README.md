@@ -21,7 +21,7 @@ may carry codes, screens don't have to).
 | Spec | Contents |
 | ------------------------ | ----------------------------------------------------------------- |
 | [NORD-01](NORD-01.md) | Asset events: genesis, transfer, confirm, melt. Chain rules. Artwork on Blossom. |
-| [NORD-02](NORD-02.md) | LNURLcash binding: asset pointer in `withdrawRequest`, registered mode (P2PK-style owner), nostr handover. |
+| [NORD-02](NORD-02.md) | LNURLcash binding: asset pointer in `withdrawRequest`, asset notes as LUD-25 Part 2 `cp1` notes, registered mode (P2PK-style owner), nostr handover. |
 | [NORD-03](NORD-03.md) | FIPS transport binding: `<npub>.fips` as the mint's canonical address, mirrors, local-first mesh operation. |
 | [DEMO-600B](DEMO-600B.md) | The 600B Timelock TCG as the reference deployment: cards, boosters, duels, banknotes. |
 

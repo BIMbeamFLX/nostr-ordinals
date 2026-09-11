@@ -12,11 +12,11 @@ a SERVICE that implements none of it is simply a mint without assets.
 
 An asset's bearer secret changes constantly (every rotate, split input,
 merge input burns one and mints another). The mint MUST track which
-outstanding secret currently *is* which asset - the same bookkeeping it
+outstanding note currently *is* which asset - the same bookkeeping it
 already does for note values, one column wider:
 
 ```
-sha256(k1_outstanding) -> (value_msat, asset_genesis_id | NULL)
+note_id -> (value_msat, asset_genesis_id | NULL)
 ```
 
 A plain value note has `NULL` there and renders as a banknote; a note
@@ -25,6 +25,26 @@ be split (an ordinal is indivisible); the mint MUST reject `amount` on
 its callback. Merge across asset notes MUST likewise be rejected. Plain
 value notes split and merge as ever.
 
+## Asset notes are Part 2 notes
+
+An asset note MUST be a LUD-25 Part 2 `cp1` note, from mint to melt:
+
+- **Mint.** The asset payLink MUST reject a mint whose `comment` is not
+  `cp1<pk>`. A genesis `anchor` (NORD-01) is therefore always a `cp1`
+  value, and `note_id` above is that pubkey.
+- **Rotate.** The mint MUST reject a rotate of an asset note whose `p1`
+  is not `cp1<pk'>`. (Split and merge are refused anyway.)
+- **Certificate.** The withdrawRequest of an asset note MUST carry
+  LUD-25's `sig` (`cs1`), and the note travels as
+  `lnurlw://...?k1=ck1<...>&amount=<msat>&sig=cs1<...>`.
+
+Why: cards change hands person to person, often offline, and a
+counterfeit card is the one fraud collectors actually care about. Part 2
+gives every asset note an issuance certificate that verifies against
+`mintPubkey` with no NORD-specific crypto, and a WALLET recovers its
+cards from its seed (LUD-25 Seed & derivation). Plain value notes stay
+free to use Part 1.
+
 ## withdrawRequest additions
 
 ```json
@@ -32,6 +52,7 @@ value notes split and merge as ever.
   "tag": "withdrawRequest",
   "...": "...",
   "mintPubkey": "<33-byte compressed secp256k1, hex>",
+  "sig": "<cs1<...>: LUD-25 certificate, required on asset notes>",
   "nostrPubkey": "<x-only nostr pubkey the chain events verify against>",
   "asset": ["<genesis event id, hex>", "<relay hint>"],
   "artwork": ["<blob url>", "<sha256 of the blob, hex>"],
@@ -86,12 +107,12 @@ URL to the recipient as a NIP-59 gift-wrapped rumor, kind `7604`:
 {
   "kind": 7604,
   "tags": [["e", "<genesis id>", "<relay>", "genesis"]],
-  "content": "<the note URL, lnurlw://...?k1=...&amount=...&sig=...>"
+  "content": "<the note URL, lnurlw://...?k1=ck1...&amount=...&sig=cs1...>"
 }
 ```
 
 The recipient's wallet unwraps, stores, and immediately rotates (LUD-25
-receive hygiene - the sender still knows the wrapped secret). The mint
+receive hygiene - the sender still knows the wrapped `ck1`). The mint
 records the bearer transfer (NORD-01 kind `7601`, mint-authored; `p`
 only if the recipient disclosed an npub at rotate time via `claimer`,
 below). Wrapped in NIP-59, nothing on relays links sender, recipient and
@@ -117,12 +138,12 @@ the mint MUST require, on every mutating callback for its secret, an
 additional parameter:
 
 ```
-callback?k1=<secret>&owner_sig=<schnorr sig, hex>
+callback?k1=ck1<...>&owner_sig=<schnorr sig, hex>
 ```
 
 `owner_sig` is a BIP-340 signature by the registered `owner` npub over
-`sha256("NORD/own" || k1)`. Possession of the secret alone no longer
-moves the asset - a leaked or shoulder-surfed note is inert without the
+`sha256("NORD/own" || pk)`, where `pk` is the asset note's current
+`cp1` key. Possession of the `ck1` alone no longer moves the asset - a leaked or shoulder-surfed note is inert without the
 owner's nostr key.
 
 Callback operations on registered assets:
@@ -142,17 +163,18 @@ reject `pr` (melt) on registered assets without `owner_sig`.
 ## Backward compatibility
 
 A legacy WALLET given an asset note sees a valid LUD-03 withdraw link
-and can melt it - the asset discharges, the mint publishes the NORD-01
+(`k1` is opaque to it) and can melt it - the asset discharges, the mint publishes the NORD-01
 melt, the card dies. That is not a flaw; it is what bearer value means.
-Registered mode exists precisely for holders who want the opposite
-trade-off. A legacy SERVICE ignores every parameter above and no chain
+A Part-1-only LNURLcash WALLET can melt it too, but cannot rotate it:
+the mint refuses a plain-hash output for an asset. Registered mode
+exists precisely for holders who want the opposite trade-off. A legacy SERVICE ignores every parameter above and no chain
 exists - notes are just notes.
 
 ## Security considerations
 
 - The mint MUST NOT accept a `7601` whose `prev` is not the current
   chain tip (stale or replayed transfers).
-- `owner_sig` commits to the *current* secret, so a captured signature
+- `owner_sig` commits to the *current* note key, so a captured signature
   dies with the rotate it authorized.
 - A mint SHOULD rate-limit `claimer`/`register` npub disclosure to
   mitigate chain-analysis spam of bearer assets.

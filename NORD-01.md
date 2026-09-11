@@ -20,15 +20,16 @@ destruction verifiable by anyone with a relay connection.
 A mint that issues assets MUST have a nostr identity, advertised as
 `nostrPubkey` (x-only hex) in its `withdrawRequest` (NORD-02).
 
-The clean case: a mint that holds its own LNURLcash signing key SHOULD
-use that same keypair - `nostrPubkey == x(mintPubkey)` - one key, two
-protocols, zero trust setup.
+LUD-25 recommends that `mintPubkey` be the node id the mint signs its
+invoices with, its certificates produced through the node's
+`signmessage` RPC. Such a mint never holds that key, and no such RPC can
+produce the raw BIP-340 signature a nostr event needs. The normal case
+is therefore a **dedicated** nostr key. A mint that does hold its
+signing key itself (e.g. a backend deriving it from its own seed) MAY
+reuse it, `nostrPubkey == x(mintPubkey)`, but clients MUST NOT assume
+so: chain events always verify against `nostrPubkey`.
 
-The delegated case (the reference implementation's reality): a mint
-whose note signatures go through its funding node's `signmessage` RPC
-never holds that key, and no such RPC can produce the raw BIP-340
-signature a nostr event needs. Such a mint uses a **dedicated** nostr
-key. The two identities are then linked where wallets already look:
+The two identities are linked where wallets already look:
 the same `withdrawRequest` advertises both `mintPubkey` and
 `nostrPubkey`, and every genesis carries the mint's `lnurl` tag - so a
 wallet that trusts the mint's endpoint learns both keys from it in one
@@ -44,7 +45,7 @@ replaceability - a wrong genesis is melted and reissued.
 ```json
 {
   "kind": 7600,
-  "pubkey": "<x(mintPubkey), hex>",
+  "pubkey": "<nostrPubkey, hex>",
   "tags": [
     ["x", "<sha256 of the artwork blob, hex>"],
     ["url", "<Blossom URL hint>"],
@@ -117,7 +118,7 @@ The mint's countersignature on a registered transfer it has executed:
 ```json
 {
   "kind": 7602,
-  "pubkey": "<x(mintPubkey)>",
+  "pubkey": "<nostrPubkey>",
   "tags": [
     ["e", "<genesis id>", "<relay hint>", "genesis"],
     ["e", "<the 7601 being confirmed>", "<relay hint>", "prev"]
@@ -143,7 +144,7 @@ A client walking an asset's chain (relay filter: `#e` = genesis id,
 kinds 7601-7603) MUST accept a link only if:
 
 1. its `genesis` tag matches, and its `prev` tag names the current tip;
-2. it is authored by the mint (`pubkey == x(mintPubkey)`), **or** it is a
+2. it is authored by the mint (`pubkey == nostrPubkey`), **or** it is a
    `7601` authored by the current registered owner and a mint `7602`
    confirms it;
 3. no earlier accepted link already extends the same tip (the mint MUST

@@ -20,7 +20,7 @@ screen, no hex strings above the fold:
 - **Card** - an asset note. Full-bleed artwork from Blossom (`x`-verified),
   name, affinity (P/B/K/S/T), set and card number from the genesis
   `content` JSON, charge shown as the card's "life". A `signed` stamp
-  when the LUD-25 signature verifies, an `owner` stamp when registered.
+  when its LUD-25 `cs1` certificate verifies against `mintPubkey`, an `owner` stamp when registered.
   Send and melt only - cards refuse split/merge (NORD-02), and melting
   shows exactly what it is: **the card dies and pays out its charge**.
 
