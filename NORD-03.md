@@ -15,16 +15,17 @@ not development.
 
 ## Identity is the address
 
-NORD-01 fixes the mint's nostr pubkey to `x(mintPubkey)`. A NORD mint
-SHOULD run a FIPS node **on that same keypair**, making it reachable at:
+NORD-01 gives the mint a nostr identity, `nostrPubkey`. A NORD mint
+SHOULD run a FIPS node **on that keypair**, making it reachable at:
 
 ```
-http://<npub(mintPubkey)>.fips/...
+http://<npub(nostrPubkey)>.fips/...
 ```
 
 This closes the last trust gap in transport: a wallet talking to
 `<npub>.fips` is, by construction, talking to the keyholder that signs
-the notes and the genesis events. No DNS to poison, no CA to trust, no
+the asset chain - and the same endpoint advertises the `mintPubkey` the
+notes' certificates verify against. No DNS to poison, no CA to trust, no
 certificate to expire. TLS is not used on `.fips` hosts - the mesh is
 already Noise-encrypted hop-by-hop and end-to-end.
 
@@ -35,7 +36,7 @@ and genesis `url` hints MAY be `.fips` URLs.
 ## URL rules
 
 - Wallets MUST resolve `.fips` hosts as `http://` (the same rule LUD-17
-  clients already apply to `.onion`). For dni/lnurl-wallet this is one
+  clients already apply to `.onion`). For lnurlcash/lnurl-wallet this is one
   line: `host.endsWith('.fips')` in `isInsecureHost`.
 - A note URL SHOULD use the mint's `.fips` address as its canonical
   host. The host is transport, never identity: `k1` is the asset,

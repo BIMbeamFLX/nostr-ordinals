@@ -1,6 +1,6 @@
 # NORD-01: Asset events
 
-`author: FLX` `status: draft` `requires: LUD-XX LNURLcash`
+`author: FLX` `status: draft` `requires: LUD-25 LNURLcash @ d2f307f`
 
 An **asset** is a unique digital object - a trading card, a ticket, a
 numbered banknote - whose charge (sats) is held by an LNURLcash SERVICE
@@ -20,15 +20,16 @@ destruction verifiable by anyone with a relay connection.
 A mint that issues assets MUST have a nostr identity, advertised as
 `nostrPubkey` (x-only hex) in its `withdrawRequest` (NORD-02).
 
-The clean case: a mint that holds its own LNURLcash signing key SHOULD
-use that same keypair - `nostrPubkey == x(mintPubkey)` - one key, two
-protocols, zero trust setup.
+LUD-25 recommends that `mintPubkey` be the node id the mint signs its
+invoices with, its certificates produced through the node's
+`signmessage` RPC. Such a mint never holds that key, and no such RPC can
+produce the raw BIP-340 signature a nostr event needs. The normal case
+is therefore a **dedicated** nostr key. A mint that does hold its
+signing key itself (e.g. a backend deriving it from its own seed) MAY
+reuse it, `nostrPubkey == x(mintPubkey)`, but clients MUST NOT assume
+so: chain events always verify against `nostrPubkey`.
 
-The delegated case (the reference implementation's reality): a mint
-whose note signatures go through its funding node's `signmessage` RPC
-never holds that key, and no such RPC can produce the raw BIP-340
-signature a nostr event needs. Such a mint uses a **dedicated** nostr
-key. The two identities are then linked where wallets already look:
+The two identities are linked where wallets already look:
 the same `withdrawRequest` advertises both `mintPubkey` and
 `nostrPubkey`, and every genesis carries the mint's `lnurl` tag - so a
 wallet that trusts the mint's endpoint learns both keys from it in one
@@ -44,12 +45,13 @@ replaceability - a wrong genesis is melted and reissued.
 ```json
 {
   "kind": 7600,
-  "pubkey": "<x(mintPubkey), hex>",
+  "pubkey": "<nostrPubkey, hex>",
   "tags": [
     ["x", "<sha256 of the artwork blob, hex>"],
     ["url", "<Blossom URL hint>"],
     ["url", "<another Blossom URL hint>"],
     ["birth", "<payment_hash of the minting invoice, hex>"],
+    ["anchor", "<the LUD-12 comment on that invoice, verbatim>"],
     ["amount", "<msat charged at birth>"],
     ["lnurl", "<the mint's withdraw endpoint, LUD-17 form>"],
     ["t", "<collection tag, e.g. 600b>"]
@@ -63,10 +65,18 @@ replaceability - a wrong genesis is melted and reissued.
   sha256 of a fetched blob against `x` and MUST NOT render a mismatch.
   `url` entries are hints, not authorities - any Blossom server that has
   the blob is as good as any other.
-- `birth` anchors the asset to the Lightning payment that minted it: it
-  is the payment hash of the minting invoice, i.e. `sha256(k1_0)` of the
-  asset's first bearer secret (LUD-XX: the preimage is the secret). The
-  paid invoice is a receipt anyone can check against this tag.
+- `birth` is the payment hash of the invoice that funded the asset: a
+  receipt. Anyone holding the paid invoice, or asking the mint's LUD-21
+  `verify`, can check the payment behind the asset against it. Under
+  LUD-25 the preimage only settles the payment and never becomes a note,
+  so `birth` says nothing about any bearer secret.
+- `anchor` binds the asset to its first note: the LUD-25 `comment` the
+  minting WALLET attached to that invoice, verbatim - the id the mint
+  credited. The WALLET chose it before paying, so it recognizes its own
+  genesis on relays before it ever rotates. Like `birth`, it is public
+  by construction (a hash or a public key) and reveals no secret. A mint
+  MUST NOT publish a genesis whose `anchor` it did not credit from the
+  invoice named in `birth`.
 - `amount` is the charge at birth. The current charge is whatever the
   mint reports for the asset's current secret; a melted asset's charge is
   zero. Genesis states history, not present.
@@ -108,7 +118,7 @@ The mint's countersignature on a registered transfer it has executed:
 ```json
 {
   "kind": 7602,
-  "pubkey": "<x(mintPubkey)>",
+  "pubkey": "<nostrPubkey>",
   "tags": [
     ["e", "<genesis id>", "<relay hint>", "genesis"],
     ["e", "<the 7601 being confirmed>", "<relay hint>", "prev"]
@@ -134,7 +144,7 @@ A client walking an asset's chain (relay filter: `#e` = genesis id,
 kinds 7601-7603) MUST accept a link only if:
 
 1. its `genesis` tag matches, and its `prev` tag names the current tip;
-2. it is authored by the mint (`pubkey == x(mintPubkey)`), **or** it is a
+2. it is authored by the mint (`pubkey == nostrPubkey`), **or** it is a
    `7601` authored by the current registered owner and a mint `7602`
    confirms it;
 3. no earlier accepted link already extends the same tip (the mint MUST

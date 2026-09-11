@@ -1,33 +1,49 @@
 # MINT.md: the complete server-side delta
 
-`status: draft` `audience: the SERVICE implementer` `requires: LUD-XX LNURLcash`
+`status: draft` `audience: the SERVICE implementer` `requires: LUD-25 LNURLcash @ d2f307f`
 
-Everything the mint has to do to make NORD real, in dependency order,
-nothing omitted, nothing optional left ambiguous. Wallet-side groundwork
-already exists ([dni/lnurl-wallet#2](https://github.com/dni/lnurl-wallet/pull/2));
+Everything the mint has to do to make NORD real, in dependency order.
+Wallet-side groundwork already exists (our [lnurl-wallet fork](https://github.com/BIMbeamFLX/lnurl-wallet/tree/feature/nostr-ordinals));
 the demo UI exists ([600.wtf/nord.html](https://github.com/600-000-000-000/600000000000/pull/32)).
-The mint is the missing piece. Estimated honest scope: items 0-3 are an
-afternoon each, 4-5 are optional.
+The mint is the missing piece. Estimated honest scope: 0.1-0.5 and 0.7
+are an afternoon each, 0.6 is the one real feature.
 
-## 0. Baseline: catch lnurl-mint up to the current LUD-XX draft
+## 0. Baseline: what lnurl-mint already does, and the delta
 
-Per the wallet README's compatibility notes, lnurl-mint still serves an
-earlier draft. Required before anything NORD:
+Checked against `lnurlcash/lnurl-mint@f09849c`. The July catch-up list
+is withdrawn: lnurl-mint now implements the pinned LUD-25 itself, Part 2
+included, and its formats replace the ones this document used to define
+(no `?id=` removal, no `LNURLcash/note` digest, no `signature` /
+`changeSignature` fields).
 
-| # | Change | Why |
-| - | ------ | --- |
-| 0.1 | Remove the `?id=sha256(k1)` lookup path | dropped from the spec; the informational GET takes the real `k1` and MUST echo the same secret back, never an opaque id |
-| 0.2 | Remove multi-`k1` melt | dropped; merge first, then melt one secret |
-| 0.3 | Informational GET returns authoritative `maxWithdrawable` = the note's value | it is the only trustworthy value statement; the URL's `amount` is a claim |
-| 0.4 | Callback semantics exactly: `k1&pr` melt, `k1` rotate, `k1&amount` split (returns `k1` + `change`), `k1&k1..` merge | the four operations, no others |
-| 0.5 | Publish `mintPubkey` (33-byte compressed secp256k1, hex) in withdrawRequest and payRequest | identity anchor for everything below |
-| 0.6 | Sign every rotated/split/merged secret: `signature` (+ `changeSignature`) in the success response, recoverable ECDSA (recovery id ‖ r ‖ s, hex) over `sha256("LNURLcash/note" ‖ uint64_be(amount_msat) ‖ sha256(k1))` | offline verification; the wallet already verifies exactly this |
-| 0.7 | Optional but cheap: LUD-21 `verify` on invoices | the wallet auto-claims on settlement with it |
+What NORD builds on, unchanged:
+
+| LUD-25 piece | lnurl-mint | NORD uses it for |
+| ------------ | ---------- | ---------------- |
+| Comment-protected minting: `comment` = `hex(sha256(secret))` or `cp1<pk>`, `commentAllowed: 64`, no comment = no invoice | `/p/cb`, `mints.comment_hash` | the asset's first note id, known before the invoice is paid |
+| Wallet-generated outputs `p1`/`p2`, success response `{"status":"OK"}` + `sig`/`sig2` | `/w/cb` | lineage: every rotate names the next note id up front |
+| `mintPubkey` on `/w` and the per-note GET, `cs1` certificates | `signing.py`, node `signmessage` (spark: its own seed key) | offline-verifiable cards |
+| Replay-safe mutations, burned notes kept as `spent=1` | `burns`, `notes.spent` | one rotate = one chain link, even under retries |
+| Lookup without the secret (`?h=`, `?p=cp1<pk>`) | `/w` | resolving a note's card without handling its secret |
+| LUD-21 `verify` on mint invoices | `/verify` | the paid invoice as a public receipt |
+
+The delta NORD adds on top:
+
+| # | Change | Where in lnurl-mint | Details |
+| - | ------ | ------------------- | ------- |
+| 0.1 | Dedicated nostr key, advertised as `nostrPubkey` on `/w` and the per-note GET | `config.py`, `get_withdraw` | §3, NORD-01 |
+| 0.2 | Nullable `asset_genesis_id` on `notes`, carried to the output of every rotate | `db.py`, `get_withdraw_callback` | §1 |
+| 0.3 | Refuse split and merge when any input is an asset note | `get_withdraw_callback` | §1 |
+| 0.4 | `asset` / `artwork` on the withdrawRequest of an asset note | `get_withdraw` | §2 |
+| 0.5 | Publish chain events at mint settlement, rotate and melt, never blocking the LNURL response | `_mint_settled_by_comment`, `get_withdraw_callback`, `_melt_settled` | §3 |
+| 0.6 | Set import and an asset payLink that binds each paid mint to the next queued instance | new module | §4 |
+| 0.7 | Asset notes are `cp1` only: the asset payLink rejects a non-`cp1` comment, `/w/cb` rejects a non-`cp1` `p1` for an asset input | `/p/cb`, `get_withdraw_callback` | §1, NORD-02 |
 
 ## 1. The asset column
 
-The mint already tracks `sha256(k1) -> value_msat` for outstanding
-notes. Add one nullable column:
+The mint already tracks `notes.id -> amount_msat` for outstanding
+notes, where `id` is the comment hash for a fresh mint, the `p1`/`p2`
+value after a mutation, and the hex pubkey for a `cp1` note. Add one nullable column:
 
 ```sql
 ALTER TABLE notes ADD COLUMN asset_genesis_id TEXT NULL;
@@ -40,6 +56,10 @@ Lineage is automatic: rotate writes the new hash with the same
   secret has a non-null `asset_genesis_id`. An ordinal is indivisible.
 - A note's asset assignment never changes after mint. There is no
   "reattach".
+- **Asset notes are `cp1` notes** (NORD-02): an asset mint whose
+  `comment` is not `cp1<pk>`, and a rotate of an asset note whose `p1`
+  is not `cp1<pk>`, MUST fail. lnurl-mint already certifies every `cp1`
+  output (`sig`/`sig2`), so cards are offline-verifiable at no extra cost.
 
 ## 2. withdrawRequest additions
 
@@ -50,6 +70,7 @@ For a note whose secret has an asset:
   "tag": "withdrawRequest",
   "callback": "...", "k1": "...", "minWithdrawable": 0, "maxWithdrawable": 0,
   "mintPubkey": "<hex>",
+  "sig": "cs1<...>",
   "asset": ["<genesis event id, hex>", "<relay url>"],
   "artwork": ["<blob url>", "<sha256 of the blob, hex>"]
 }
@@ -65,13 +86,14 @@ For a note whose secret has an asset:
 
 ## 3. Nostr publishing
 
-- Identity per NORD-01: `nostrPubkey == x(mintPubkey)` when the mint
-  holds its own signing key; a mint that delegates note signatures to
-  its node's `signmessage` RPC (lnurl-mint does) uses a dedicated nostr
-  key instead and advertises it as `nostrPubkey` on the withdrawRequest
-  - implemented in [dni/lnurl-mint#1](https://github.com/dni/lnurl-mint/pull/1).
+- Identity per NORD-01: a dedicated nostr key, advertised as
+  `nostrPubkey` on the withdrawRequest. lnurl-mint certifies notes
+  through its node's `signmessage` RPC, which cannot sign nostr events;
+  only a backend that holds its signing key (spark) may reuse it. The
+  nostr side was prototyped in [lnurlcash/lnurl-mint#1](https://github.com/lnurlcash/lnurl-mint/pull/1) (closed unmerged).
 - On **mint settlement** of an asset: publish kind `7600` (genesis) with
-  `x`, `url`, `birth` = the invoice's payment hash, `amount`, `lnurl`,
+  `x`, `url`, `birth` = the invoice's payment hash, `anchor` = its
+  `comment` verbatim, `amount`, `lnurl`,
   `t` tags and the collection's content JSON (NORD-01).
 - On **rotate** of an asset secret: publish kind `7601` referencing
   genesis + current tip; include `["p", <npub>]` iff the caller passed
@@ -94,7 +116,7 @@ publish genesis. That is the whole pipeline.
 ## 5. Optional: registered mode (NORD-02)
 
 `owner` in withdrawRequest; `owner_sig` (BIP-340 over
-`sha256("NORD/own" ‖ k1)`) required on every mutating callback for a
+`sha256("NORD/own" ‖ pk)`, `pk` the note's current `cp1` key) required on every mutating callback for a
 registered secret; `register=` / `release=` / `transfer=` params; kind
 `7602` confirms. Skip for v1 - bearer mode is the demo.
 
@@ -131,9 +153,10 @@ point.
    DHT resolution latency, CID codec/multihash variability, gateway
    dependence, pinning services as de-facto registries. Blossom is the
    subset of that idea that survives contact with production.
-4. **One identity, everywhere.** BUD uploads are signed with nostr
-   keys. The mint's `x(mintPubkey)` already signs its notes (LUD-XX)
-   and its events (NORD-01); it now also owns its blobs. No second
+4. **One nostr identity, everywhere.** BUD uploads are signed with
+   nostr keys. The mint's `nostrPubkey` already signs its events
+   (NORD-01); it now also owns its blobs, and the withdrawRequest links
+   it to `mintPubkey`. No second
    account system, no API keys, no bucket policies.
 5. **Deduplication by construction.** A set has thousands of card
    instances sharing dozens of artworks. Content addressing stores
@@ -160,4 +183,4 @@ point.
   (upload at set import); serving blobs is somebody's static box.
 - No new endpoints. Everything rides the LUD-03/06 shapes plus fields.
 - No account system, no admin UI, no queue infrastructure. SQLite, a
-  timer, and the four callback operations LUD-XX already defines.
+  timer, and the four callback operations LUD-25 already defines.

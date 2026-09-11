@@ -1,11 +1,14 @@
 # NORD prototype deployment
 
 One box, one compose file, our forks: the mint with the asset layer
-([dni/lnurl-mint#1](https://github.com/dni/lnurl-mint/pull/1), built
+([lnurlcash/lnurl-mint#1](https://github.com/lnurlcash/lnurl-mint/pull/1), closed unmerged, built
 straight from `BIMbeamFLX/lnurl-mint#feature/nord-assets`), lnd on
 neutrino (no bitcoind - header sync only, minutes not days), a strfry
 relay for the asset chains, caddy for TLS + forwarded headers + static
 Blossom serving. Fits the smallest Hetzner VPS (2 GB RAM is plenty).
+
+> This prototype predates the LUD-25 pin (see the top-level README) and
+> still speaks the July draft. It is not updated to the pinned spec yet.
 
 **Real sats run through this.** Keep `MAX_SENDABLE_MSAT` tight, fund the
 node with pocket money, and remember melts pay routing fees out of the
@@ -41,7 +44,7 @@ docker compose exec mint python -m lnurl_mint.assets import /tmp/set.json
 
 1. `https://mint.<domain>/` shows the one-pager with node info.
 2. Any LNURLcash wallet (e.g. [dni.github.io/lnurl-wallet](https://dni.github.io/lnurl-wallet/), or our
-   [cardviewer fork](https://github.com/dni/lnurl-wallet/pull/2)): mint at
+   [cardviewer fork](https://github.com/BIMbeamFLX/lnurl-wallet/tree/feature/nostr-ordinals)): mint at
    `mint@mint.<domain>` for **15 000 msat exactly** - the note that comes
    back IS a starter card: its withdrawRequest carries
    `asset: [genesis id, wss://relay.<domain>]` and `nostrPubkey`.
