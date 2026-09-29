@@ -58,7 +58,7 @@ docker compose exec mint python -m lnurl_mint.assets import /tmp/set.json
   caching and open CORS. The current starter set ships without artwork
   fields (the card text is the genesis content); a set with art is a
   re-import away - new instances, new geneses, the chain doesn't mind.
-- **alflx instead of Hetzner**: same compose file; for public reach
+- **A home machine instead of a VPS**: same compose file; for public reach
   without port-forwarding, `tailscale funnel` in front of caddy's port
   (or run caddy on the funnel port directly). DNS then points at the
   ts.net name instead.
